@@ -1,3 +1,5 @@
+import java.util.Optional;
+
 /**
  * A data structure used as a linked list.
  * @param <T> The generic type of this data structure.
@@ -6,41 +8,26 @@
  */
 public class MyLinkedList<T extends Comparable<T>> {
 
-    /** How many comparisons are made. */
-    public long comparisons;
-
-    /**
-     * The starting Node.
-     */
+    /** The starting Node. */
     private Node<T> myStart;
 
-    /**
-     * The previous node.
-     */
+    /** The previous node from the current Node. */
     private Node<T> myPrevious;
 
-    /**
-     * The current node on.
-     */
+    /** The current node on. */
     private Node<T> myCurrent;
 
-    /**
-     * How many elements are stored in the list.
-     */
+    /** How many elements are stored in the list. */
     private int mySize;
 
-    /**
-     * Constructor used to instantiate a new MyLinkedList.
-     */
+    /** Constructor used to instantiate a new MyLinkedList. */
     public MyLinkedList() {
         super();
         myPrevious = null;
         myStart = null;
         myCurrent = null;
         mySize = 0;
-        comparisons = 0;
     }
-
 
     /**
      * Adds the element before the current node.
@@ -83,9 +70,7 @@ public class MyLinkedList<T extends Comparable<T>> {
         }
     }
 
-    /**
-     * Removes the current node.
-     */
+    /** Removes the current node. */
     public T remove() {
         T result = null;
         if (myCurrent != null) {
@@ -104,7 +89,6 @@ public class MyLinkedList<T extends Comparable<T>> {
 
     /**
      * If the given item is in the list.
-     *
      * @param theItem element whose presence in this list is to be tested.
      * @return true if this list contains the specified element.
      */
@@ -112,7 +96,6 @@ public class MyLinkedList<T extends Comparable<T>> {
         boolean result = false;
         Node<T> current = myStart;
         while (current != null) {
-            comparisons++;
             if (current.myItem.compareTo(theItem) == 0) {
                 result = true;
                 break;
@@ -122,9 +105,7 @@ public class MyLinkedList<T extends Comparable<T>> {
         return result;
     }
 
-    /**
-     * Sort the MyLinkedList.
-     */
+    /** Sort the MyLinkedList. */
     public void sort() {
         Node<T> current = myStart;
         for (int i = 0; i < mySize; i++) {
@@ -165,7 +146,9 @@ public class MyLinkedList<T extends Comparable<T>> {
     public T first() {
         myPrevious = null;
         myCurrent = myStart;
-        return myCurrent == null ? null : myCurrent.myItem;
+        return Optional.ofNullable(myCurrent).
+               map(current -> current.myItem).
+               orElse(null);
     }
 
     /**
@@ -173,7 +156,9 @@ public class MyLinkedList<T extends Comparable<T>> {
      * @return The item at the current node.
      */
     public T current() {
-        return myCurrent == null ? null : myCurrent.myItem;
+        return Optional.ofNullable(myCurrent).
+               map(current -> current.myItem).
+               orElse(null);
     }
 
     /**
@@ -185,7 +170,9 @@ public class MyLinkedList<T extends Comparable<T>> {
         if (myCurrent != null) {
             myPrevious = myCurrent;
             myCurrent = myCurrent.myNext;
-            result = myCurrent == null ? null : myCurrent.myItem;
+            result = Optional.ofNullable(myCurrent).
+                     map(current -> current.myItem).
+                     orElse(null);
         }
         return result;
     }
@@ -208,19 +195,15 @@ public class MyLinkedList<T extends Comparable<T>> {
 
     private static final class Node<T> {
 
-        /**
-         * The item stored in this Node.
-         */
+        /** The item stored in this Node. */
         private T myItem;
 
-        /**
-         * The Node after this Node.
-         */
+        /** The Node after this Node. */
         private Node<T> myNext;
 
         @Override
         public String toString() {
-            return myItem == null ? null : myItem.toString();
+            return Optional.ofNullable(myItem).map(Object::toString).orElse(null);
         }
     }
 }

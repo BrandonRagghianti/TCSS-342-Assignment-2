@@ -1,5 +1,3 @@
-import java.util.Objects;
-
 /**
  * A data structure used as a dynamically sized array.
  * @param <T> The generic type of this data structure.
@@ -7,9 +5,6 @@ import java.util.Objects;
  * @version Winter 2024
  */
 public class MyArrayList<T extends Comparable<T>> {
-
-    /** How many comparisons are made. */
-    public long comparisons;
 
     /** The default size the array will be instantiated to. */
     private static final int DEFAULT_SIZE = 16;
@@ -30,7 +25,6 @@ public class MyArrayList<T extends Comparable<T>> {
         myArray = (T[]) new Comparable[DEFAULT_SIZE];
         myCapacity = DEFAULT_SIZE;
         mySize = 0;
-        comparisons = 0;
     }
 
     /**
@@ -48,6 +42,51 @@ public class MyArrayList<T extends Comparable<T>> {
             }
             myArray[theIndex] = theItem;
             mySize++;
+        }
+    }
+
+    /** Doubles the size of the array. */
+    @SuppressWarnings("unchecked")
+    private void resize() {
+        myCapacity <<= 2;
+        final T[] temp = (T[]) new Comparable[myCapacity];
+        System.arraycopy(myArray, 0, temp, 0, mySize);
+        myArray = temp;
+    }
+
+    /** Sorts the MyArrayList using MergeSort. */
+    public void sort() {
+        mergeSort(this, 0, mySize - 1);
+    }
+
+    private void mergeSort(final MyArrayList<T> theArray,
+                           final int theStart,
+                           final int theEnd) {
+        if (theStart < theEnd) {
+            final int mid = ((theStart + theEnd) / 2) + 1;
+            mergeSort(this, theStart, mid - 1);
+            mergeSort(this, mid, theEnd);
+            merge(this, theStart, mid, theEnd);
+        }
+    }
+
+    private void merge(final MyArrayList<T> theArray, final int theStart,
+                       final int theMiddle, final int theEnd) {
+        int i = theStart;
+        int j = theMiddle;
+        final MyArrayList<T> temp = new MyArrayList<>();
+        while (i < theMiddle && j < theEnd + 1) {
+            temp.insert(theArray.get(i).compareTo(theArray.get(j)) <= 0
+                 ? theArray.get(i++) : theArray.get(j++), temp.size());
+        }
+        while (i < theMiddle) {
+            temp.insert(theArray.get(i++), temp.size());
+        }
+        while (j < theEnd + 1) {
+            temp.insert(theArray.get(j++), temp.size());
+        }
+        for (int k = 0; k < temp.size(); k++) {
+            theArray.set(theStart + k, temp.get(k));
         }
     }
 
@@ -75,7 +114,6 @@ public class MyArrayList<T extends Comparable<T>> {
     public boolean contains(final T theItem) {
         boolean result = false;
         for (int i = 0; i < mySize; i++) {
-            ++comparisons;
             if (myArray[i] != null && myArray[i].compareTo(theItem) == 0) {
                 result = true;
                 break;
@@ -94,55 +132,12 @@ public class MyArrayList<T extends Comparable<T>> {
      */
     public int indexOf(final T theItem) {
         int result = -1;
-        for (int i = 0; i < mySize; i++) {
-            if (myArray[i].compareTo(theItem) == 0) {
+        for (int i = 0; i < myCapacity; i++) {
+            if (myArray[i] != null && myArray[i].equals(theItem)) {
                 result = i;
             }
         }
         return result;
-    }
-
-    /** Doubles the size of the array. */
-    @SuppressWarnings("unchecked")
-    private void resize() {
-        myCapacity *= 2;
-        final T[] temp = (T[]) new Comparable[myCapacity];
-        if (mySize >= 0) System.arraycopy(myArray, 0, temp, 0, mySize);
-        myArray = temp;
-    }
-
-    /** Sorts the MyArrayList using MergeSort. */
-    public void sort() {
-        mergeSort(this, 0, mySize - 1);
-    }
-
-    private void mergeSort(final MyArrayList<T> theArray, final int theStart, final int theEnd) {
-        if (theStart < theEnd) {
-            final int mid = ((theStart + theEnd) / 2) + 1;
-            mergeSort(this, theStart, mid - 1);
-            mergeSort(this, mid, theEnd);
-            merge(this, theStart, mid, theEnd);
-        }
-    }
-
-    private void merge(final MyArrayList<T> theArray, final int theStart,
-                       final int theMiddle, final int theEnd) {
-        int i = theStart;
-        int j = theMiddle;
-        final MyArrayList<T> temp = new MyArrayList<>();
-        while (i < theMiddle && j < theEnd + 1) {
-            temp.insert(theArray.get(i).compareTo(theArray.get(j)) <= 0
-                        ? theArray.get(i++) : theArray.get(j++), temp.size());
-        }
-        while (i < theMiddle) {
-            temp.insert(theArray.get(i++), temp.size());
-        }
-        while (j < theEnd + 1) {
-            temp.insert(theArray.get(j++), temp.size());
-        }
-        for (int k = 0; k < temp.size(); k++) {
-            theArray.set(theStart + k, temp.get(k));
-        }
     }
 
     /**

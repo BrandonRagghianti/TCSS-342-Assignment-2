@@ -6,24 +6,16 @@
  */
 public class UniqueWords {
 
-    /**
-     * A BookReader that contains the contents of passed book.
-     */
+    /** A BookReader that contains the contents of passed book. */
     public final BookReader book;
 
-    /**
-     * A MyArrayList object that is used to store the unique words of the book.
-     */
+    /** A MyArrayList object that is used to store the unique words of the book. */
     public final MyArrayList<String> alOfUniqueWords;
 
-    /**
-     * A MyLinkedList object that is used to store the unique words of the book.
-     */
+    /** A MyLinkedList object that is used to store the unique words of the book. */
     public final MyLinkedList<String> llOfUniqueWords;
 
-    /**
-     * A MyOrderedList object that is used to store the unique words of the book.
-     */
+    /** A MyOrderedList object that is used to store the unique words of the book. */
     public final MyOrderedList<String> olOfUniqueWords;
 
     /** Constructor used to instantiate a new UniqueWords. */
@@ -35,9 +27,7 @@ public class UniqueWords {
         olOfUniqueWords = new MyOrderedList<>();
     }
 
-    /**
-     * Adds all unique words of the book to the MyArrayList.
-     */
+    /** Adds all unique words of the book to the MyArrayList. */
     public void addUniqueWordsToArrayList() {
         final long startTime = System.currentTimeMillis();
         String c = book.words.first();
@@ -47,15 +37,13 @@ public class UniqueWords {
             }
             c = book.words.next();
         }
-        long runtime = (System.currentTimeMillis() - startTime);
+        final long runtime = System.currentTimeMillis() - startTime;
         System.out.println("Runtime of MyArrayList: "
                 + runtime / 1000 + " seconds and "
                 + runtime % 1000 + " milliseconds.");
     }
 
-    /**
-     * Adds all unique words of the book to the MyLinkedList.
-     */
+    /** Adds all unique words of the book to the MyLinkedList. */
     public void addUniqueWordsToLinkedList() {
         final long startTime = System.currentTimeMillis();
         String c = book.words.first();
@@ -65,15 +53,13 @@ public class UniqueWords {
             }
             c = book.words.next();
         }
-        long runtime = (System.currentTimeMillis() - startTime);
+        final long runtime = System.currentTimeMillis() - startTime;
         System.out.println("Runtime of MyLinkedList: "
                 + runtime / 1000 + " seconds and "
                 + runtime % 1000 + " milliseconds.");
     }
 
-    /**
-     * Adds all unique words of the book to the MyOrderedList.
-     */
+    /** Adds all unique words of the book to the MyOrderedList. */
     public void addUniqueWordsToOrderedList() {
         final long startTime = System.currentTimeMillis();
         String c = book.words.first();
@@ -83,7 +69,7 @@ public class UniqueWords {
             }
             c = book.words.next();
         }
-        long runtime = (System.currentTimeMillis() - startTime);
+        final long runtime = (System.currentTimeMillis() - startTime);
         System.out.println("Runtime of MyOrderedList: "
                            + runtime / 1000 + " seconds and "
                            + runtime % 1000 + " milliseconds.");

@@ -8,19 +8,13 @@ import java.io.IOException;
  */
 public final class BookReader {
 
-    /**
-     * Used to store the contents of the book.
-     */
+    /** used to store the contents of the book. */
     public String book;
 
-    /**
-     * Stores all words from the parsed txt document.
-     */
+    /** Stores all words from the parsed txt document. */
     public final MyLinkedList<String> words;
 
-    /**
-     * Default constructor if no file name is passed into constructor.
-     */
+    /** Default constructor if no file name is passed into constructor. */
     public BookReader() {
         this("WarAndPeace.txt");
     }
